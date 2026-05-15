@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scale Practice Generator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #1a1208;
+      --paper: #f5f0e8;
+      --cream: #ede7d3;
+      --accent: #b5451b;
+      --accent-light: #e8683a;
+      --rule: #c8bfa8;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'DM Mono', monospace;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: repeating-linear-gradient(
+        0deg, transparent, transparent 27px, var(--rule) 27px, var(--rule) 28px
+      );
+      opacity: 0.35;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── SCREENS ── */
+    .screen {
+      position: fixed; inset: 0;
+      overflow-y: auto;
+      transition: opacity 0.45s ease, transform 0.45s ease;
+      z-index: 1;
+    }
+    .screen.hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(40px);
+    }
+
+    .inner {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 3rem 2rem 6rem;
+    }
+
+    /* ── HEADER ── */
+    .site-header {
+      border-bottom: 2px solid var(--ink);
+      padding-bottom: 1.2rem;
+      margin-bottom: 2.4rem;
+    }
+    .eyebrow {
+      font-size: 0.6rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+    }
+    .site-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 900;
+      line-height: 1.05;
+    }
+    .site-header .subtitle {
+      margin-top: 0.5rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: #6b5f4e;
+    }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+      font-size: 0.58rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+      margin-top: 2.2rem;
+    }
+
+    /* ── SCALE GRID ── */
+    .scale-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      border: 1.5px solid var(--ink);
+    }
+    .scale-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.65rem 1rem;
+      border-bottom: 1px solid var(--rule);
+      border-right: 1px solid var(--rule);
+      cursor: pointer;
+      transition: background 0.15s;
+      user-select: none;
+    }
+    .scale-item:hover  { background: var(--cream); }
+    .scale-item.checked { background: #ede0c8; }
+
+    .scale-name { font-size: 0.8rem; letter-spacing: 0.03em; }
+    .scale-type { font-size: 0.62rem; color: #9a8e7e; letter-spacing: 0.05em; }
+
+    /* ── SHARED CHECKBOX ── */
+    input[type="checkbox"] {
+      appearance: none;
+      width: 14px; height: 14px;
+      border: 1.5px solid var(--ink);
+      background: white;
+      cursor: pointer;
+      flex-shrink: 0;
+      position: relative;
+      transition: background 0.15s;
+    }
+    input[type="checkbox"]:checked { background: var(--accent); border-color: var(--accent); }
+    input[type="checkbox"]:checked::after {
+      content: '';
+      position: absolute;
+      left: 2px; top: -1px;
+      width: 8px; height: 5px;
+      border-left: 2px solid white;
+      border-bottom: 2px solid white;
+      transform: rotate(-45deg);
+    }
+
+    /* ── TOOLBAR ── */
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+    .select-links { font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; }
+    .select-links button {
+      background: none; border: none; cursor: pointer;
+      color: var(--accent); font: inherit;
+      text-decoration: underline; text-underline-offset: 3px; padding: 0;
+    }
+    .select-links button:hover { color: var(--accent-light); }
+    .divider { color: var(--rule); }
+    .count-badge { margin-left: auto; font-size: 0.65rem; letter-spacing: 0.1em; color: #6b5f4e; }
+    .count-badge span { font-weight: 500; color: var(--accent); }
+
+    /* ── OPTION GROUPS ── */
+    .options-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 1rem;
+      margin-top: 0.6rem;
+    }
+    .option-group {
+      border: 1.5px solid var(--ink);
+      padding: 1rem 1.2rem;
+      background: white;
+    }
+    .option-group-title {
+      font-size: 0.6rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #9a8e7e;
+      margin-bottom: 0.75rem;
+    }
+    .pill-row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+    .opt-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.38rem 0.85rem;
+      border: 1.5px solid var(--rule);
+      background: var(--paper);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+    .opt-pill:hover { border-color: var(--ink); }
+    .opt-pill.selected {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: var(--paper);
+    }
+    .opt-pill .dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      border: 1.5px solid currentColor;
+      flex-shrink: 0;
+    }
+    .opt-pill.selected .dot { background: var(--accent-light); border-color: var(--accent-light); }
+
+    /* ── WARNING ── */
+    .warn-strip {
+      display: none;
+      background: #fff3cd;
+      border: 1px solid #e6c94a;
+      padding: 0.5rem 1rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.06em;
+      color: #7a5c00;
+      margin-top: 0.75rem;
+    }
+    .warn-strip.visible { display: block; }
+
+    /* ── BUTTONS ── */
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--ink); color: var(--paper);
+      border: none; padding: 0.85rem 2rem;
+      font-family: 'DM Mono', monospace; font-size: 0.72rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      cursor: pointer; transition: background 0.2s, transform 0.1s;
+    }
+    .btn-primary:hover { background: var(--accent); }
+    .btn-primary:active { transform: scale(0.98); }
+    .btn-primary:disabled { background: var(--rule); cursor: not-allowed; }
+
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: transparent; color: var(--ink);
+      border: 1.5px solid var(--ink); padding: 0.75rem 1.5rem;
+      font-family: 'DM Mono', monospace; font-size: 0.72rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      cursor: pointer; transition: background 0.2s, color 0.2s;
+    }
+    .btn-secondary:hover { background: var(--ink); color: var(--paper); }
+
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: transparent; color: var(--accent);
+      border: 1.5px solid var(--accent); padding: 0.75rem 1.5rem;
+      font-family: 'DM Mono', monospace; font-size: 0.72rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      cursor: pointer; transition: background 0.2s, color 0.2s;
+    }
+    .btn-ghost:hover { background: var(--accent); color: white; }
+
+    /* ── ASSIGNMENT CARD ── */
+    .assignment-card {
+      border: 2px solid var(--ink);
+      background: white; padding: 2.5rem;
+      position: relative; box-shadow: 6px 6px 0 var(--ink);
+      animation: slideUp 0.4s ease both;
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .stamp {
+      position: absolute; top: -12px; right: 1.5rem;
+      background: var(--accent); color: white;
+      font-size: 0.55rem; letter-spacing: 0.2em;
+      text-transform: uppercase; padding: 0.2rem 0.7rem;
+    }
+
+    .scale-display {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 7vw, 4.5rem);
+      font-weight: 900; line-height: 1;
+    }
+    .scale-display .type-tag {
+      display: block;
+      font-size: clamp(0.9rem, 2vw, 1.3rem);
+      font-weight: 400; font-style: italic;
+      color: var(--accent); margin-top: 0.3rem;
+    }
+
+    .notes-row {
+      display: flex; flex-wrap: wrap; gap: 0.5rem;
+      margin-top: 1.5rem; padding-top: 1.5rem;
+      border-top: 1px solid var(--rule);
+    }
+    .note-pill {
+      font-size: 0.7rem; letter-spacing: 0.08em;
+      padding: 0.3rem 0.65rem;
+      border: 1px solid var(--ink); background: var(--cream);
+    }
+    .note-pill.root { background: var(--ink); color: var(--paper); font-weight: 500; }
+
+    .practice-details {
+      margin-top: 1.8rem; padding-top: 1.5rem;
+      border-top: 1px solid var(--rule);
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.2rem;
+    }
+    .detail-block .label {
+      font-size: 0.58rem; letter-spacing: 0.25em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 0.3rem;
+    }
+    .detail-block .value { font-size: 0.82rem; letter-spacing: 0.04em; }
+
+    /* ── HISTORY ── */
+    .history-list { margin-top: 2.5rem; }
+    .history-label {
+      font-size: 0.58rem; letter-spacing: 0.25em;
+      text-transform: uppercase; color: #9a8e7e;
+      margin-bottom: 0.8rem; padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--rule);
+    }
+    .history-item {
+      display: flex; justify-content: space-between; align-items: baseline;
+      padding: 0.45rem 0; border-bottom: 1px solid var(--rule);
+      font-size: 0.7rem; color: #6b5f4e;
+      gap: 1rem;
+    }
+    .history-item:last-child { border-bottom: none; }
+    .history-item .h-scale { font-weight: 500; color: var(--ink); white-space: nowrap; }
+    .history-item .h-params { color: #9a8e7e; text-align: right; }
+
+    /* ── ACTION ROW ── */
+    .action-row { display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap; }
+
+    /* ── NEW SESSION AREA ── */
+    .session-divider {
+      margin-top: 3rem; padding-top: 2rem;
+      border-top: 2px dashed var(--rule);
+      display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
+    }
+    .session-divider p { font-size: 0.65rem; letter-spacing: 0.06em; color: #9a8e7e; flex: 1; }
+
+    /* ── BACK LINK ── */
+    .back-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--accent); cursor: pointer; margin-bottom: 1.5rem;
+      background: none; border: none; padding: 0; font-family: inherit;
+    }
+    .back-link:hover { color: var(--accent-light); }
+
+    @media (max-width: 520px) {
+      .inner { padding: 2rem 1rem 5rem; }
+      .scale-grid { grid-template-columns: 1fr 1fr; }
+      .practice-details { grid-template-columns: 1fr 1fr; }
+      .options-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     SCREEN 1 — SETTINGS
+══════════════════════════════════════ -->
+<div class="screen" id="screen-select">
+  <div class="inner">
+
+    <header class="site-header">
+      <p class="eyebrow">Daily Drill</p>
+      <h1>Scale Practice<br>Generator</h1>
+      <p class="subtitle">Choose your scales · Set your parameters · Practice</p>
+    </header>
+
+    <!-- MAJOR -->
+    <p class="section-label">Major Scales</p>
+    <div class="scale-grid" id="major-grid"></div>
+
+    <!-- MINOR -->
+    <p class="section-label">Natural Minor Scales</p>
+    <div class="scale-grid" id="minor-grid"></div>
+
+    <!-- TOOLBAR -->
+    <div class="toolbar">
+      <div class="select-links">
+        <button onclick="scaleSelectAll()">All</button>
+        <span class="divider"> / </span>
+        <button onclick="scaleSelectNone()">None</button>
+        <span class="divider"> / </span>
+        <button onclick="scaleMajorOnly()">Major Only</button>
+        <span class="divider"> / </span>
+        <button onclick="scaleMinorOnly()">Minor Only</button>
+      </div>
+      <div class="count-badge"><span id="count">0</span> scales selected</div>
+    </div>
+
+    <!-- ── PRACTICE PARAMETERS ── -->
+    <p class="section-label" style="margin-top:3rem;">Practice Parameters</p>
+    <p style="font-size:0.65rem;color:#9a8e7e;letter-spacing:0.05em;margin-bottom:1rem;line-height:1.7;">
+      Select one or more options in each group. The generator will pick randomly from your choices.
+      At least one option per group must remain active.
+    </p>
+
+    <div class="options-row">
+
+      <!-- OCTAVES -->
+      <div class="option-group">
+        <p class="option-group-title">Octaves</p>
+        <div class="pill-row">
+          <span class="opt-pill selected" data-group="octaves" data-val="1 Octave" onclick="togglePill(this)">
+            <span class="dot"></span>1 Octave
+          </span>
+          <span class="opt-pill selected" data-group="octaves" data-val="2 Octaves" onclick="togglePill(this)">
+            <span class="dot"></span>2 Octaves
+          </span>
+        </div>
+      </div>
+
+      <!-- HANDS -->
+      <div class="option-group">
+        <p class="option-group-title">Hands</p>
+        <div class="pill-row">
+          <span class="opt-pill selected" data-group="hands" data-val="Hands Together" onclick="togglePill(this)">
+            <span class="dot"></span>Together
+          </span>
+          <span class="opt-pill selected" data-group="hands" data-val="Hands Apart" onclick="togglePill(this)">
+            <span class="dot"></span>Apart
+          </span>
+        </div>
+      </div>
+
+      <!-- MOTION -->
+      <div class="option-group">
+        <p class="option-group-title">Motion</p>
+        <div class="pill-row">
+          <span class="opt-pill selected" data-group="motion" data-val="Parallel Motion" onclick="togglePill(this)">
+            <span class="dot"></span>Parallel
+          </span>
+          <span class="opt-pill selected" data-group="motion" data-val="Contrary Motion" onclick="togglePill(this)">
+            <span class="dot"></span>Contrary
+          </span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="warn-strip" id="warn-options">
+      ⚠ Please select at least one scale, and keep at least one option active in each parameter group.
+    </div>
+
+    <button class="btn-primary" id="generate-btn" onclick="goToAssignment()" disabled style="margin-top:2.2rem;">
+      Generate Assignment →
+    </button>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     SCREEN 2 — ASSIGNMENT
+══════════════════════════════════════ -->
+<div class="screen hidden" id="screen-assign">
+  <div class="inner">
+
+    <button class="back-link" onclick="goBack()">← Back to Settings</button>
+
+    <header class="site-header">
+      <p class="eyebrow">Your Assignment</p>
+      <h1>Practice<br>Session</h1>
+      <p class="subtitle" id="pool-summary"></p>
+    </header>
+
+    <!-- CARD -->
+    <div class="assignment-card" id="assignment-card">
+      <span class="stamp">Current Scale</span>
+
+      <div class="scale-display">
+        <span id="scale-root">—</span>
+        <span class="type-tag" id="scale-type-tag">—</span>
+      </div>
+
+      <div class="notes-row" id="notes-row"></div>
+
+      <div class="practice-details">
+        <div class="detail-block">
+          <div class="label">Octaves</div>
+          <div class="value" id="detail-octaves">—</div>
+        </div>
+        <div class="detail-block">
+          <div class="label">Hands</div>
+          <div class="value" id="detail-hands">—</div>
+        </div>
+        <div class="detail-block">
+          <div class="label">Motion</div>
+          <div class="value" id="detail-motion">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HISTORY -->
+    <div class="history-list" id="history-list" style="display:none;">
+      <p class="history-label">Previously in this session</p>
+      <div id="history-items"></div>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="action-row">
+      <button class="btn-primary" onclick="generateAssignment()">Next Assignment ↻</button>
+      <button class="btn-secondary" onclick="goBack()">← Change Settings</button>
+    </div>
+
+    <!-- NEW SESSION -->
+    <div class="session-divider">
+      <p>Want to start fresh? This will clear your session history and return you to the settings screen.</p>
+      <button class="btn-ghost" onclick="newSession()">⟳ New Session</button>
+    </div>
+
+  </div>
+</div>
+
+
+<script>
+  // ── SCALE DATA ──────────────────────────────────────────────────────
+
+  const MAJOR_SCALES = {
+    'C Major':   ['C','D','E','F','G','A','B','C'],
+    'G Major':   ['G','A','B','C','D','E','F♯','G'],
+    'D Major':   ['D','E','F♯','G','A','B','C♯','D'],
+    'A Major':   ['A','B','C♯','D','E','F♯','G♯','A'],
+    'E Major':   ['E','F♯','G♯','A','B','C♯','D♯','E'],
+    'B Major':   ['B','C♯','D♯','E','F♯','G♯','A♯','B'],
+    'F♯ Major':  ['F♯','G♯','A♯','B','C♯','D♯','E♯','F♯'],
+    'C♯ Major':  ['C♯','D♯','E♯','F♯','G♯','A♯','B♯','C♯'],
+    'F Major':   ['F','G','A','B♭','C','D','E','F'],
+    'B♭ Major':  ['B♭','C','D','E♭','F','G','A','B♭'],
+    'E♭ Major':  ['E♭','F','G','A♭','B♭','C','D','E♭'],
+    'A♭ Major':  ['A♭','B♭','C','D♭','E♭','F','G','A♭'],
+    'D♭ Major':  ['D♭','E♭','F','G♭','A♭','B♭','C','D♭'],
+    'G♭ Major':  ['G♭','A♭','B♭','C♭','D♭','E♭','F','G♭'],
+    'C♭ Major':  ['C♭','D♭','E♭','F♭','G♭','A♭','B♭','C♭'],
+  };
+
+  const MINOR_SCALES = {
+    'A Natural Minor':  ['A','B','C','D','E','F','G','A'],
+    'E Natural Minor':  ['E','F♯','G','A','B','C','D','E'],
+    'B Natural Minor':  ['B','C♯','D','E','F♯','G','A','B'],
+    'F♯ Natural Minor': ['F♯','G♯','A','B','C♯','D','E','F♯'],
+    'C♯ Natural Minor': ['C♯','D♯','E','F♯','G♯','A','B','C♯'],
+    'G♯ Natural Minor': ['G♯','A♯','B','C♯','D♯','E','F♯','G♯'],
+    'D♯ Natural Minor': ['D♯','E♯','F♯','G♯','A♯','B','C♯','D♯'],
+    'A♯ Natural Minor': ['A♯','B♯','C♯','D♯','E♯','F♯','G♯','A♯'],
+    'D Natural Minor':  ['D','E','F','G','A','B♭','C','D'],
+    'G Natural Minor':  ['G','A','B♭','C','D','E♭','F','G'],
+    'C Natural Minor':  ['C','D','E♭','F','G','A♭','B♭','C'],
+    'F Natural Minor':  ['F','G','A♭','B♭','C','D♭','E♭','F'],
+    'B♭ Natural Minor': ['B♭','C','D♭','E♭','F','G♭','A♭','B♭'],
+    'E♭ Natural Minor': ['E♭','F','G♭','A♭','B♭','C♭','D♭','E♭'],
+    'A♭ Natural Minor': ['A♭','B♭','C♭','D♭','E♭','F♭','G♭','A♭'],
+  };
+
+  const ALL_SCALES = { ...MAJOR_SCALES, ...MINOR_SCALES };
+  const MAJOR_KEYS = Object.keys(MAJOR_SCALES);
+  const MINOR_KEYS = Object.keys(MINOR_SCALES);
+
+  // ── STATE ───────────────────────────────────────────────────────────
+  const selectedScales = new Set();
+  const history = [];
+
+  const optionState = {
+    octaves: new Set(['1 Octave',       '2 Octaves']),
+    hands:   new Set(['Hands Together', 'Hands Apart']),
+    motion:  new Set(['Parallel Motion','Contrary Motion']),
+  };
+
+  // ── BUILD SCALE GRIDS ───────────────────────────────────────────────
+  function buildGrid(containerId, keys) {
+    const grid = document.getElementById(containerId);
+    keys.forEach(name => {
+      const item = document.createElement('label');
+      item.className = 'scale-item';
+      item.dataset.name = name;
+
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.addEventListener('change', () => {
+        cb.checked ? selectedScales.add(name) : selectedScales.delete(name);
+        item.classList.toggle('checked', cb.checked);
+        updateGenerateBtn();
+      });
+
+      const lbl = document.createElement('span');
+      const [root, ...rest] = name.split(' ');
+      lbl.innerHTML = `<span class="scale-name">${root}</span>&nbsp;<span class="scale-type">${rest.join(' ')}</span>`;
+
+      item.appendChild(cb);
+      item.appendChild(lbl);
+      grid.appendChild(item);
+    });
+  }
+
+  buildGrid('major-grid', MAJOR_KEYS);
+  buildGrid('minor-grid', MINOR_KEYS);
+
+  // ── SCALE SELECT HELPERS ────────────────────────────────────────────
+  function applyScaleCheck(filterFn, check) {
+    document.querySelectorAll('.scale-item').forEach(item => {
+      if (filterFn(item.dataset.name)) {
+        const cb = item.querySelector('input');
+        cb.checked = check;
+        check ? selectedScales.add(item.dataset.name) : selectedScales.delete(item.dataset.name);
+        item.classList.toggle('checked', check);
+      }
+    });
+    updateGenerateBtn();
+  }
+
+  function scaleSelectAll()  { applyScaleCheck(() => true, true); }
+  function scaleSelectNone() { applyScaleCheck(() => true, false); }
+  function scaleMajorOnly()  {
+    applyScaleCheck(() => true, false);
+    applyScaleCheck(n => MAJOR_KEYS.includes(n), true);
+  }
+  function scaleMinorOnly()  {
+    applyScaleCheck(() => true, false);
+    applyScaleCheck(n => MINOR_KEYS.includes(n), true);
+  }
+
+  // ── OPTION PILL TOGGLE ──────────────────────────────────────────────
+  function togglePill(pill) {
+    const group = pill.dataset.group;
+    const val   = pill.dataset.val;
+    const set   = optionState[group];
+
+    // Never allow deselecting the last pill in a group
+    if (set.has(val) && set.size === 1) return;
+
+    if (set.has(val)) {
+      set.delete(val);
+      pill.classList.remove('selected');
+    } else {
+      set.add(val);
+      pill.classList.add('selected');
+    }
+    updateGenerateBtn();
+  }
+
+  // ── GENERATE BUTTON STATE ───────────────────────────────────────────
+  function updateGenerateBtn() {
+    document.getElementById('count').textContent = selectedScales.size;
+    const valid = selectedScales.size > 0;
+    document.getElementById('generate-btn').disabled = !valid;
+    document.getElementById('warn-options').classList.toggle('visible', false);
+  }
+
+  // ── NAVIGATION ──────────────────────────────────────────────────────
+  function goToAssignment() {
+    if (selectedScales.size === 0) return;
+
+    // Build summary string
+    const sc = selectedScales.size;
+    const octStr    = [...optionState.octaves].join(' or ');
+    const handsStr  = [...optionState.hands].join(' or ');
+    const motionStr = [...optionState.motion].join(' or ');
+    document.getElementById('pool-summary').textContent =
+      `${sc} scale${sc > 1 ? 's' : ''} · ${octStr} · ${handsStr} · ${motionStr}`;
+
+    document.getElementById('screen-select').classList.add('hidden');
+    document.getElementById('screen-assign').classList.remove('hidden');
+    generateAssignment();
+  }
+
+  function goBack() {
+    document.getElementById('screen-assign').classList.add('hidden');
+    document.getElementById('screen-select').classList.remove('hidden');
+  }
+
+  function newSession() {
+    // Clear session history
+    history.length = 0;
+    document.getElementById('history-items').innerHTML = '';
+    document.getElementById('history-list').style.display = 'none';
+    // Return to settings screen
+    goBack();
+  }
+
+  // ── GENERATE ────────────────────────────────────────────────────────
+  function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+  function pickFrom(set) { return pick([...set]); }
+
+  function generateAssignment() {
+    const scaleName = pickFrom(selectedScales);
+    const notes     = ALL_SCALES[scaleName];
+    const octave    = pickFrom(optionState.octaves);
+    const hand      = pickFrom(optionState.hands);
+    const motion    = pickFrom(optionState.motion);
+
+    // Scale name display
+    const parts = scaleName.split(' ');
+    const root  = parts[0];
+    const type  = parts.slice(1).join(' ');
+    document.getElementById('scale-root').textContent     = root;
+    document.getElementById('scale-type-tag').textContent = type;
+
+    // Note pills
+    const notesRow = document.getElementById('notes-row');
+    notesRow.innerHTML = '';
+    notes.forEach((n, i) => {
+      const pill = document.createElement('span');
+      pill.className = 'note-pill' + (i === 0 || i === notes.length - 1 ? ' root' : '');
+      pill.textContent = n;
+      notesRow.appendChild(pill);
+    });
+
+    // Detail blocks
+    document.getElementById('detail-octaves').textContent = octave;
+    document.getElementById('detail-hands').textContent   = hand;
+    document.getElementById('detail-motion').textContent  = motion;
+
+    // Push previous to history display
+    if (history.length > 0) {
+      const prev   = history[history.length - 1];
+      const histEl = document.getElementById('history-items');
+      const item   = document.createElement('div');
+      item.className = 'history-item';
+      item.innerHTML =
+        `<span class="h-scale">${prev.scale}</span>`
+        + `<span class="h-params">${prev.octave} · ${prev.hand} · ${prev.motion}</span>`;
+      histEl.insertBefore(item, histEl.firstChild);
+      if (histEl.children.length > 8) histEl.removeChild(histEl.lastChild);
+      document.getElementById('history-list').style.display = 'block';
+    }
+
+    history.push({ scale: scaleName, octave, hand, motion });
+
+    // Re-trigger card animation
+    const card = document.getElementById('assignment-card');
+    card.style.animation = 'none';
+    card.offsetHeight;
+    card.style.animation = 'slideUp 0.4s ease both';
+  }
+</script>
+</body>
+</html>
