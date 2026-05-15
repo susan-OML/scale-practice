@@ -203,6 +203,17 @@
     }
     .opt-pill.selected .dot { background: var(--accent-light); border-color: var(--accent-light); }
 
+    /* ── DISABLED OPTION GROUP (motion when hands-apart only) ── */
+    .option-group.disabled {
+      opacity: 0.38;
+      pointer-events: none;
+    }
+    .option-group.disabled .option-group-title::after {
+      content: ' — N/A for Hands Apart';
+      font-style: italic;
+      letter-spacing: 0.08em;
+    }
+
     /* ── WARNING ── */
     .warn-strip {
       display: none;
@@ -420,7 +431,7 @@
       </div>
 
       <!-- MOTION -->
-      <div class="option-group">
+      <div class="option-group" id="motion-group">
         <p class="option-group-title">Motion</p>
         <div class="pill-row">
           <span class="opt-pill selected" data-group="motion" data-val="Parallel Motion" onclick="togglePill(this)">
@@ -631,7 +642,18 @@
       set.add(val);
       pill.classList.add('selected');
     }
+
+    if (group === 'hands') syncMotionGroup();
     updateGenerateBtn();
+  }
+
+  // ── SYNC MOTION GROUP ───────────────────────────────────────────────
+  // Motion only applies when Hands Together is possible.
+  // If the user picked ONLY Hands Apart, grey out the motion panel.
+  function syncMotionGroup() {
+    const togetherActive = optionState.hands.has('Hands Together');
+    document.getElementById('motion-group')
+      .classList.toggle('disabled', !togetherActive);
   }
 
   // ── GENERATE BUTTON STATE ───────────────────────────────────────────
@@ -650,9 +672,11 @@
     const sc = selectedScales.size;
     const octStr    = [...optionState.octaves].join(' or ');
     const handsStr  = [...optionState.hands].join(' or ');
-    const motionStr = [...optionState.motion].join(' or ');
+    const motionStr = optionState.hands.has('Hands Together')
+      ? ' · ' + [...optionState.motion].join(' or ')
+      : '';
     document.getElementById('pool-summary').textContent =
-      `${sc} scale${sc > 1 ? 's' : ''} · ${octStr} · ${handsStr} · ${motionStr}`;
+      `${sc} scale${sc > 1 ? 's' : ''} · ${octStr} · ${handsStr}${motionStr}`;
 
     document.getElementById('screen-select').classList.add('hidden');
     document.getElementById('screen-assign').classList.remove('hidden');
@@ -682,7 +706,11 @@
     const notes     = ALL_SCALES[scaleName];
     const octave    = pickFrom(optionState.octaves);
     const hand      = pickFrom(optionState.hands);
-    const motion    = pickFrom(optionState.motion);
+
+    // Motion only applies when Hands Together is assigned.
+    // If this roll landed on Hands Apart, or Together isn't in the pool, skip motion.
+    const motionApplies = hand === 'Hands Together';
+    const motion = motionApplies ? pickFrom(optionState.motion) : null;
 
     // Scale name display
     const parts = scaleName.split(' ');
@@ -704,17 +732,29 @@
     // Detail blocks
     document.getElementById('detail-octaves').textContent = octave;
     document.getElementById('detail-hands').textContent   = hand;
-    document.getElementById('detail-motion').textContent  = motion;
+    const motionEl = document.getElementById('detail-motion');
+    if (motionApplies) {
+      motionEl.textContent = motion;
+      motionEl.style.color = '';
+      document.querySelector('#detail-motion').closest('.detail-block').style.opacity = '1';
+    } else {
+      motionEl.textContent = '—';
+      document.querySelector('#detail-motion').closest('.detail-block').style.opacity = '0.35';
+    }
 
     // Push previous to history display
+    const motionLabel = motion || '—';
     if (history.length > 0) {
       const prev   = history[history.length - 1];
       const histEl = document.getElementById('history-items');
       const item   = document.createElement('div');
       item.className = 'history-item';
+      const prevParams = prev.motion
+        ? `${prev.octave} · ${prev.hand} · ${prev.motion}`
+        : `${prev.octave} · ${prev.hand}`;
       item.innerHTML =
         `<span class="h-scale">${prev.scale}</span>`
-        + `<span class="h-params">${prev.octave} · ${prev.hand} · ${prev.motion}</span>`;
+        + `<span class="h-params">${prevParams}</span>`;
       histEl.insertBefore(item, histEl.firstChild);
       if (histEl.children.length > 8) histEl.removeChild(histEl.lastChild);
       document.getElementById('history-list').style.display = 'block';
