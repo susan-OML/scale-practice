@@ -9,12 +9,12 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --ink: #1a1208;
-      --paper: #f5f0e8;
-      --cream: #ede7d3;
-      --accent: #8c3fc0;
-      --accent-light: #d896ff;
-      --rule: #c8bfa8;
+      --ink: #26215C;
+      --paper: #f7f5ff;
+      --cream: #e8e4fb;
+      --accent: #534AB7;
+      --accent-light: #7F77DD;
+      --rule: #AFA9EC;
     }
 
     html, body {
@@ -287,35 +287,52 @@
       color: #9a8e7e;
       margin-bottom: 0.75rem;
     }
-    .pill-row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-
-    .opt-pill {
-      display: inline-flex;
+    /* ── TOGGLE SWITCHES ── */
+    .toggle-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .toggle-switch {
+      display: flex;
       align-items: center;
-      gap: 0.45rem;
-      padding: 0.5rem 1rem;
-      border: 1.5px solid var(--rule);
-      background: var(--paper);
-      font-family: 'DM Mono', monospace;
-      font-size: 0.88rem;
-      letter-spacing: 0.05em;
+      gap: 0.85rem;
       cursor: pointer;
       user-select: none;
-      transition: background 0.15s, border-color 0.15s, color 0.15s;
     }
-    .opt-pill:hover { border-color: var(--ink); }
-    .opt-pill.selected {
+    .toggle-switch input[type="radio"] {
+      appearance: none;
+      width: 42px; height: 24px;
+      border-radius: 999px;
+      border: 1.5px solid var(--rule);
+      background: var(--paper);
+      cursor: pointer;
+      position: relative;
+      flex-shrink: 0;
+      transition: background 0.22s, border-color 0.22s;
+    }
+    .toggle-switch input[type="radio"]::after {
+      content: '';
+      position: absolute;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: var(--rule);
+      top: 3px; left: 3px;
+      transition: transform 0.22s, background 0.22s;
+    }
+    .toggle-switch input[type="radio"]:checked {
       background: var(--ink);
       border-color: var(--ink);
-      color: var(--paper);
     }
-    .opt-pill .dot {
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      border: 1.5px solid currentColor;
-      flex-shrink: 0;
+    .toggle-switch input[type="radio"]:checked::after {
+      background: white;
+      transform: translateX(18px);
     }
-    .opt-pill.selected .dot { background: var(--accent-light); border-color: var(--accent-light); }
+    .toggle-label {
+      font-size: 0.88rem;
+      letter-spacing: 0.04em;
+      color: var(--ink);
+    }
 
     /* ── DISABLED OPTION GROUP ── */
     .option-group.disabled {
@@ -591,8 +608,7 @@
     <!-- ── PRACTICE PARAMETERS ── -->
     <p class="section-label" style="margin-top:3rem;">Practice Parameters</p>
     <p style="font-size:0.78rem;color:#9a8e7e;letter-spacing:0.04em;margin-bottom:1rem;line-height:1.7;">
-      Select one or more options per group. The generator picks randomly from your choices.
-      At least one option per group must stay active.
+      Select one option per group. The generator will use your chosen setting for every assignment.
     </p>
 
     <div class="options-row">
@@ -600,39 +616,45 @@
       <!-- OCTAVES -->
       <div class="option-group">
         <p class="option-group-title">Octaves</p>
-        <div class="pill-row">
-          <span class="opt-pill selected" data-group="octaves" data-val="1 Octave" onclick="togglePill(this)">
-            <span class="dot"></span>1 Octave
-          </span>
-          <span class="opt-pill selected" data-group="octaves" data-val="2 Octaves" onclick="togglePill(this)">
-            <span class="dot"></span>2 Octaves
-          </span>
+        <div class="toggle-row">
+          <label class="toggle-switch">
+            <input type="radio" name="octaves" value="1 Octave" onchange="togglePill(this)" checked>
+            <span class="toggle-label">1 Octave</span>
+          </label>
+          <label class="toggle-switch">
+            <input type="radio" name="octaves" value="2 Octaves" onchange="togglePill(this)">
+            <span class="toggle-label">2 Octaves</span>
+          </label>
         </div>
       </div>
 
       <!-- HANDS -->
       <div class="option-group">
         <p class="option-group-title">Hands</p>
-        <div class="pill-row">
-          <span class="opt-pill selected" data-group="hands" data-val="Hands Together" onclick="togglePill(this)">
-            <span class="dot"></span>Together
-          </span>
-          <span class="opt-pill selected" data-group="hands" data-val="Hands Apart" onclick="togglePill(this)">
-            <span class="dot"></span>Apart
-          </span>
+        <div class="toggle-row">
+          <label class="toggle-switch">
+            <input type="radio" name="hands" value="Hands Together" onchange="togglePill(this)" checked>
+            <span class="toggle-label">Together</span>
+          </label>
+          <label class="toggle-switch">
+            <input type="radio" name="hands" value="Hands Apart" onchange="togglePill(this)">
+            <span class="toggle-label">Apart</span>
+          </label>
         </div>
       </div>
 
       <!-- MOTION -->
       <div class="option-group" id="motion-group">
         <p class="option-group-title">Motion</p>
-        <div class="pill-row">
-          <span class="opt-pill selected" data-group="motion" data-val="Parallel Motion" onclick="togglePill(this)">
-            <span class="dot"></span>Parallel
-          </span>
-          <span class="opt-pill selected" data-group="motion" data-val="Contrary Motion" onclick="togglePill(this)">
-            <span class="dot"></span>Contrary
-          </span>
+        <div class="toggle-row">
+          <label class="toggle-switch">
+            <input type="radio" name="motion" value="Parallel Motion" onchange="togglePill(this)" checked>
+            <span class="toggle-label">Parallel</span>
+          </label>
+          <label class="toggle-switch">
+            <input type="radio" name="motion" value="Contrary Motion" onchange="togglePill(this)">
+            <span class="toggle-label">Contrary</span>
+          </label>
         </div>
       </div>
 
@@ -814,9 +836,9 @@
   const history        = [];
 
   const optionState = {
-    octaves: new Set(['1 Octave',        '2 Octaves']),
-    hands:   new Set(['Hands Together',  'Hands Apart']),
-    motion:  new Set(['Parallel Motion', 'Contrary Motion']),
+    octaves: new Set(['1 Octave']),
+    hands:   new Set(['Hands Together']),
+    motion:  new Set(['Parallel Motion']),
   };
 
   // Per-type selected count tracker
@@ -940,22 +962,24 @@
   // PRACTICE PARAMETER PILLS
   // ══════════════════════════════════════
 
-  function togglePill(pill) {
-    const group = pill.dataset.group;
-    const val   = pill.dataset.val;
+  function togglePill(input) {
+    const group = input.name;
+    const val   = input.value;
     const set   = optionState[group];
-    // Deselect all others in this group, select only this one
-    document.querySelectorAll(`.opt-pill[data-group="${group}"]`)
-      .forEach(p => { p.classList.remove('selected'); set.delete(p.dataset.val); });
+    set.clear();
     set.add(val);
-    pill.classList.add('selected');
     if (group === 'hands') syncMotionGroup();
     updateGenerateBtn();
   }
 
   function syncMotionGroup() {
     const togetherActive = optionState.hands.has('Hands Together');
-    document.getElementById('motion-group').classList.toggle('disabled', !togetherActive);
+    const motionGroup    = document.getElementById('motion-group');
+    motionGroup.classList.toggle('disabled', !togetherActive);
+    if (!togetherActive) {
+      optionState.motion.clear();
+      optionState.motion.add('Parallel Motion');
+    }
   }
 
   // ══════════════════════════════════════
