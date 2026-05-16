@@ -944,9 +944,11 @@
     const group = pill.dataset.group;
     const val   = pill.dataset.val;
     const set   = optionState[group];
-    if (set.has(val) && set.size === 1) return; // keep at least one
-    if (set.has(val)) { set.delete(val); pill.classList.remove('selected'); }
-    else              { set.add(val);    pill.classList.add('selected'); }
+    // Deselect all others in this group, select only this one
+    document.querySelectorAll(`.opt-pill[data-group="${group}"]`)
+      .forEach(p => { p.classList.remove('selected'); set.delete(p.dataset.val); });
+    set.add(val);
+    pill.classList.add('selected');
     if (group === 'hands') syncMotionGroup();
     updateGenerateBtn();
   }
