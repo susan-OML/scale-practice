@@ -39,7 +39,7 @@
     .screen {
       position: fixed; inset: 0;
       overflow-y: auto;
-      transition: opacity 0.45s ease, transform 0.45s ease;
+      transition: opacity 0.4s ease, transform 0.4s ease;
       z-index: 1;
     }
     .screen.hidden {
@@ -91,22 +91,15 @@
     }
 
     /* ── TYPE TOGGLE ROW ── */
-    .type-toggle-wrap {
-      margin-top: 0.6rem;
-      margin-bottom: 0.5rem;
-    }
+    .type-toggle-wrap { margin-top: 0.6rem; margin-bottom: 0.5rem; }
     .type-toggle-hint {
-      font-size: 0.75rem;
+      font-size: 0.78rem;
       color: #9a8e7e;
       letter-spacing: 0.04em;
       margin-bottom: 0.9rem;
       line-height: 1.6;
     }
-    .type-toggle-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.6rem;
-    }
+    .type-toggle-row { display: flex; flex-wrap: wrap; gap: 0.6rem; }
     .type-pill {
       display: inline-flex;
       align-items: center;
@@ -123,11 +116,7 @@
       transition: background 0.15s, border-color 0.15s, color 0.15s;
     }
     .type-pill:hover { border-color: var(--ink); }
-    .type-pill.active {
-      background: var(--ink);
-      border-color: var(--ink);
-      color: var(--paper);
-    }
+    .type-pill.active { background: var(--ink); border-color: var(--ink); color: var(--paper); }
     .type-pill .tp-dot {
       width: 8px; height: 8px;
       border-radius: 50%;
@@ -135,10 +124,7 @@
       flex-shrink: 0;
       transition: background 0.15s;
     }
-    .type-pill.active .tp-dot {
-      background: var(--accent-light);
-      border-color: var(--accent-light);
-    }
+    .type-pill.active .tp-dot { background: var(--accent-light); border-color: var(--accent-light); }
 
     /* ── SCALE SECTION BLOCK ── */
     .scale-section {
@@ -147,12 +133,7 @@
       overflow: hidden;
     }
     .scale-section.collapsed .scale-grid { display: none; }
-    .scale-section.collapsed .section-footer { display: none; }
-    .scale-section.inactive {
-      border-color: var(--rule);
-      opacity: 0.55;
-    }
-
+    .scale-section.inactive { border-color: var(--rule); opacity: 0.55; }
     .scale-section-header {
       display: flex;
       align-items: center;
@@ -163,29 +144,12 @@
       flex-wrap: wrap;
       gap: 0.5rem;
     }
-    .scale-section.inactive .scale-section-header {
-      background: var(--paper);
-    }
-    .section-header-left {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-    .section-title {
-      font-size: 0.82rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      font-weight: 500;
-    }
-    .section-count {
-      font-size: 0.72rem;
-      color: #9a8e7e;
-    }
+    .scale-section.inactive .scale-section-header { background: var(--paper); }
+    .section-header-left { display: flex; align-items: center; gap: 0.75rem; }
+    .section-title { font-size: 0.82rem; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500; }
+    .section-count { font-size: 0.72rem; color: #9a8e7e; }
     .section-count span { color: var(--accent); font-weight: 500; }
-    .section-quick-links {
-      font-size: 0.75rem;
-      letter-spacing: 0.06em;
-    }
+    .section-quick-links { font-size: 0.75rem; letter-spacing: 0.06em; }
     .section-quick-links button {
       background: none; border: none; cursor: pointer;
       color: var(--accent); font: inherit;
@@ -193,47 +157,33 @@
     }
     .section-quick-links button:hover { color: var(--accent-light); }
     .section-quick-links .qdiv { color: var(--rule); }
-
     .inactive-label {
-      font-size: 0.7rem;
-      color: #9a8e7e;
-      letter-spacing: 0.08em;
-      font-style: italic;
+      font-size: 0.72rem; color: #9a8e7e;
+      letter-spacing: 0.08em; font-style: italic;
       padding: 0.65rem 1rem;
     }
 
     /* ── SCALE GRID ── */
-    .scale-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
-    }
+    .scale-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(195px, 1fr)); }
     .scale-item {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
+      display: flex; align-items: center; gap: 0.75rem;
       padding: 0.65rem 1rem;
       border-bottom: 1px solid var(--rule);
       border-right: 1px solid var(--rule);
-      cursor: pointer;
-      transition: background 0.15s;
-      user-select: none;
+      cursor: pointer; transition: background 0.15s; user-select: none;
     }
-    .scale-item:hover  { background: var(--cream); }
-    .scale-item.checked { background: #ede0c8; }
-
+    .scale-item:hover   { background: var(--cream); }
+    .scale-item.checked { background: #ddd8f8; }
     .scale-name { font-size: 1rem; letter-spacing: 0.03em; }
     .scale-type { font-size: 0.78rem; color: #9a8e7e; letter-spacing: 0.04em; }
 
-    /* ── SHARED CHECKBOX ── */
+    /* ── CHECKBOX ── */
     input[type="checkbox"] {
       appearance: none;
       width: 14px; height: 14px;
       border: 1.5px solid var(--ink);
-      background: white;
-      cursor: pointer;
-      flex-shrink: 0;
-      position: relative;
-      transition: background 0.15s;
+      background: white; cursor: pointer; flex-shrink: 0;
+      position: relative; transition: background 0.15s;
     }
     input[type="checkbox"]:checked { background: var(--accent); border-color: var(--accent); }
     input[type="checkbox"]:checked::after {
@@ -248,14 +198,10 @@
 
     /* ── GLOBAL TOOLBAR ── */
     .global-toolbar {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-top: 1.2rem;
-      flex-wrap: wrap;
+      display: flex; align-items: center; gap: 1rem;
+      margin-top: 1.2rem; flex-wrap: wrap;
       padding: 0.8rem 1rem;
-      border: 1px solid var(--rule);
-      background: white;
+      border: 1px solid var(--rule); background: white;
     }
     .select-links { font-size: 0.82rem; letter-spacing: 0.06em; text-transform: uppercase; }
     .select-links button {
@@ -267,96 +213,6 @@
     .divider { color: var(--rule); }
     .count-badge { margin-left: auto; font-size: 0.85rem; letter-spacing: 0.08em; color: #6b5f4e; }
     .count-badge span { font-weight: 500; color: var(--accent); }
-
-    /* ── OPTION GROUPS ── */
-    .options-row {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-      gap: 1rem;
-      margin-top: 0.6rem;
-    }
-    .option-group {
-      border: 1.5px solid var(--ink);
-      padding: 1rem 1.2rem;
-      background: white;
-    }
-    .option-group-title {
-      font-size: 0.78rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: #9a8e7e;
-      margin-bottom: 0.75rem;
-    }
-    /* ── TOGGLE SWITCHES ── */
-    .toggle-row {
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-    }
-    .toggle-switch {
-      display: flex;
-      align-items: center;
-      gap: 0.85rem;
-      cursor: pointer;
-      user-select: none;
-    }
-    .toggle-switch input[type="radio"] {
-      appearance: none;
-      width: 42px; height: 24px;
-      border-radius: 999px;
-      border: 1.5px solid var(--rule);
-      background: var(--paper);
-      cursor: pointer;
-      position: relative;
-      flex-shrink: 0;
-      transition: background 0.22s, border-color 0.22s;
-    }
-    .toggle-switch input[type="radio"]::after {
-      content: '';
-      position: absolute;
-      width: 16px; height: 16px;
-      border-radius: 50%;
-      background: var(--rule);
-      top: 3px; left: 3px;
-      transition: transform 0.22s, background 0.22s;
-    }
-    .toggle-switch input[type="radio"]:checked {
-      background: var(--ink);
-      border-color: var(--ink);
-    }
-    .toggle-switch input[type="radio"]:checked::after {
-      background: white;
-      transform: translateX(18px);
-    }
-    .toggle-label {
-      font-size: 0.88rem;
-      letter-spacing: 0.04em;
-      color: var(--ink);
-    }
-
-    /* ── DISABLED OPTION GROUP ── */
-    .option-group.disabled {
-      opacity: 0.38;
-      pointer-events: none;
-    }
-    .option-group.disabled .option-group-title::after {
-      content: ' — N/A for Hands Apart';
-      font-style: italic;
-      letter-spacing: 0.08em;
-    }
-
-    /* ── WARNING ── */
-    .warn-strip {
-      display: none;
-      background: #fff3cd;
-      border: 1px solid #e6c94a;
-      padding: 0.5rem 1rem;
-      font-size: 0.85rem;
-      letter-spacing: 0.04em;
-      color: #7a5c00;
-      margin-top: 0.75rem;
-    }
-    .warn-strip.visible { display: block; }
 
     /* ── BUTTONS ── */
     .btn-primary {
@@ -408,7 +264,6 @@
       font-size: 0.7rem; letter-spacing: 0.2em;
       text-transform: uppercase; padding: 0.25rem 0.8rem;
     }
-
     .scale-display {
       font-family: 'Playfair Display', serif;
       font-size: clamp(2.8rem, 8vw, 5rem);
@@ -420,7 +275,6 @@
       font-weight: 400; font-style: italic;
       color: var(--accent); margin-top: 0.3rem;
     }
-
     .notes-row {
       display: flex; flex-wrap: wrap; gap: 0.5rem;
       margin-top: 1.5rem; padding-top: 1.5rem;
@@ -433,17 +287,6 @@
     }
     .note-pill.root { background: var(--ink); color: var(--paper); font-weight: 500; }
 
-    .practice-details {
-      margin-top: 1.8rem; padding-top: 1.5rem;
-      border-top: 1px solid var(--rule);
-      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.2rem;
-    }
-    .detail-block .label {
-      font-size: 0.72rem; letter-spacing: 0.22em;
-      text-transform: uppercase; color: var(--accent); margin-bottom: 0.4rem;
-    }
-    .detail-block .value { font-size: 1rem; letter-spacing: 0.04em; }
-
     /* ── HISTORY ── */
     .history-list { margin-top: 2.5rem; }
     .history-label {
@@ -455,17 +298,15 @@
     .history-item {
       display: flex; justify-content: space-between; align-items: baseline;
       padding: 0.55rem 0; border-bottom: 1px solid var(--rule);
-      font-size: 0.88rem; color: #6b5f4e;
-      gap: 1rem;
+      font-size: 0.88rem; color: #6b5f4e; gap: 1rem;
     }
     .history-item:last-child { border-bottom: none; }
-    .history-item .h-scale { font-weight: 500; color: var(--ink); white-space: nowrap; }
-    .history-item .h-params { color: #9a8e7e; text-align: right; }
+    .history-item .h-scale { font-weight: 500; color: var(--ink); }
 
     /* ── ACTION ROW ── */
     .action-row { display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap; }
 
-    /* ── NEW SESSION AREA ── */
+    /* ── NEW SESSION ── */
     .session-divider {
       margin-top: 3rem; padding-top: 2rem;
       border-top: 2px dashed var(--rule);
@@ -482,11 +323,18 @@
     }
     .back-link:hover { color: var(--accent-light); }
 
+    /* ── WARN ── */
+    .warn-strip {
+      display: none;
+      background: #f0ebff; border: 1px solid var(--rule);
+      padding: 0.5rem 1rem; font-size: 0.85rem;
+      letter-spacing: 0.04em; color: var(--accent); margin-top: 0.75rem;
+    }
+    .warn-strip.visible { display: block; }
+
     @media (max-width: 520px) {
       .inner { padding: 2rem 1rem 5rem; }
       .scale-grid { grid-template-columns: 1fr 1fr; }
-      .practice-details { grid-template-columns: 1fr 1fr; }
-      .options-row { grid-template-columns: 1fr; }
       .type-toggle-row { gap: 0.4rem; }
       .type-pill { font-size: 0.78rem; padding: 0.45rem 0.9rem; }
     }
@@ -495,21 +343,20 @@
 <body>
 
 <!-- ══════════════════════════════════════
-     SCREEN 1 — SETTINGS
+     SCREEN 1 — SCALE SELECTION
 ══════════════════════════════════════ -->
 <div class="screen" id="screen-select">
   <div class="inner">
 
     <header class="site-header">
-      <p class="eyebrow">Random</p>
-      <h1>Scale<br>Generator</h1>
-      <p class="subtitle">Choose your scales · Choose your settings · Practice</p>
+      <h1>Random Scale<br>Generator</h1>
+      <p class="subtitle">Select your scales and generate a random assignment.</p>
     </header>
 
-    <!-- ── SCALE TYPE TOGGLES ── -->
+    <!-- SCALE TYPE TOGGLES -->
     <p class="section-label">Scale Types</p>
     <div class="type-toggle-wrap">
-      <p class="type-toggle-hint">Toggle a scale type on to expand its grid below. Only active types will appear in your assignments.</p>
+      <p class="type-toggle-hint">Toggle a scale type on to expand its grid. Only active types will be included in assignments.</p>
       <div class="type-toggle-row">
         <span class="type-pill active" data-type="major" onclick="toggleType(this)">
           <span class="tp-dot"></span>Major
@@ -526,10 +373,9 @@
       </div>
     </div>
 
-    <!-- ── SCALE GRIDS (one per type) ── -->
+    <!-- SCALE GRIDS -->
     <p class="section-label">Scale Selection</p>
 
-    <!-- MAJOR -->
     <div class="scale-section" id="section-major">
       <div class="scale-section-header">
         <div class="section-header-left">
@@ -545,7 +391,6 @@
       <div class="scale-grid" id="major-grid"></div>
     </div>
 
-    <!-- NATURAL MINOR -->
     <div class="scale-section" id="section-natural">
       <div class="scale-section-header">
         <div class="section-header-left">
@@ -561,7 +406,6 @@
       <div class="scale-grid" id="natural-grid"></div>
     </div>
 
-    <!-- HARMONIC MINOR -->
     <div class="scale-section collapsed inactive" id="section-harmonic">
       <div class="scale-section-header">
         <div class="section-header-left">
@@ -578,7 +422,6 @@
       <div class="inactive-label">Toggle "Harmonic Minor" above to enable this section.</div>
     </div>
 
-    <!-- MELODIC MINOR -->
     <div class="scale-section collapsed inactive" id="section-melodic">
       <div class="scale-section-header">
         <div class="section-header-left">
@@ -605,67 +448,12 @@
       <div class="count-badge"><span id="count-total">0</span> scales selected</div>
     </div>
 
-    <!-- ── PRACTICE PARAMETERS ── -->
-    <p class="section-label" style="margin-top:3rem;">Practice Parameters</p>
-    <p style="font-size:0.78rem;color:#9a8e7e;letter-spacing:0.04em;margin-bottom:1rem;line-height:1.7;">
-      Select one option per group. The generator will use your chosen setting for every assignment.
-    </p>
-
-    <div class="options-row">
-
-      <!-- OCTAVES -->
-      <div class="option-group">
-        <p class="option-group-title">Octaves</p>
-        <div class="toggle-row">
-          <label class="toggle-switch">
-            <input type="radio" name="octaves" value="1 Octave" onchange="togglePill(this)" checked>
-            <span class="toggle-label">1 Octave</span>
-          </label>
-          <label class="toggle-switch">
-            <input type="radio" name="octaves" value="2 Octaves" onchange="togglePill(this)">
-            <span class="toggle-label">2 Octaves</span>
-          </label>
-        </div>
-      </div>
-
-      <!-- HANDS -->
-      <div class="option-group">
-        <p class="option-group-title">Hands</p>
-        <div class="toggle-row">
-          <label class="toggle-switch">
-            <input type="radio" name="hands" value="Hands Together" onchange="togglePill(this)" checked>
-            <span class="toggle-label">Together</span>
-          </label>
-          <label class="toggle-switch">
-            <input type="radio" name="hands" value="Hands Apart" onchange="togglePill(this)">
-            <span class="toggle-label">Apart</span>
-          </label>
-        </div>
-      </div>
-
-      <!-- MOTION -->
-      <div class="option-group" id="motion-group">
-        <p class="option-group-title">Motion</p>
-        <div class="toggle-row">
-          <label class="toggle-switch">
-            <input type="radio" name="motion" value="Parallel Motion" onchange="togglePill(this)" checked>
-            <span class="toggle-label">Parallel</span>
-          </label>
-          <label class="toggle-switch">
-            <input type="radio" name="motion" value="Contrary Motion" onchange="togglePill(this)">
-            <span class="toggle-label">Contrary</span>
-          </label>
-        </div>
-      </div>
-
+    <div class="warn-strip" id="warn-select">
+      ⚠ Please select at least one scale to continue.
     </div>
 
-    <div class="warn-strip" id="warn-options">
-      ⚠ Please select at least one scale to generate a random scale.
-    </div>
-
-    <button class="btn-primary" id="generate-btn" onclick="goToAssignment()" disabled style="margin-top:2.2rem;">
-      Generate Random Scale Assignment →
+    <button class="btn-primary" id="generate-btn" onclick="goToAssignment()" disabled style="margin-top:2rem;">
+      Generate Assignment →
     </button>
 
   </div>
@@ -678,45 +466,28 @@
 <div class="screen hidden" id="screen-assign">
   <div class="inner">
 
-    <button class="back-link" onclick="goBack()">← Back to Settings</button>
+    <button class="back-link" onclick="goBack()">← Back to Scale Selection</button>
 
     <header class="site-header">
-      <p class="eyebrow">Your Random Scale Assignment</p>
-      <h1>Practice<br>Session</h1>
+      <p class="eyebrow">Practice Session</p>
+      <h1>Your Random<br>Scale</h1>
       <p class="subtitle" id="pool-summary"></p>
     </header>
 
-    <!-- CARD -->
+    <!-- ASSIGNMENT CARD -->
     <div class="assignment-card" id="assignment-card">
       <span class="stamp">Current Scale</span>
-
       <div class="scale-display">
         <span id="scale-root">—</span>
         <span class="type-tag" id="scale-type-tag">—</span>
       </div>
-
       <div class="notes-row" id="notes-row"></div>
-
-      <div class="practice-details">
-        <div class="detail-block">
-          <div class="label">Octaves</div>
-          <div class="value" id="detail-octaves">—</div>
-        </div>
-        <div class="detail-block">
-          <div class="label">Hands</div>
-          <div class="value" id="detail-hands">—</div>
-        </div>
-        <div class="detail-block">
-          <div class="label">Motion</div>
-          <div class="value" id="detail-motion">—</div>
-        </div>
-      </div>
     </div>
 
     <!-- ACTIONS -->
     <div class="action-row">
-      <button class="btn-primary" onclick="generateAssignment()">Next Scale ↻</button>
-      <button class="btn-secondary" onclick="goBack()">← Change Settings</button>
+      <button class="btn-primary" onclick="generateAssignment()">Generate a New Scale ↻</button>
+      <button class="btn-secondary" onclick="goBack()">← Change Scales</button>
     </div>
 
     <!-- HISTORY -->
@@ -727,7 +498,7 @@
 
     <!-- NEW SESSION -->
     <div class="session-divider">
-      <p>Want to start fresh? This will clear your session history and return you to the settings screen.</p>
+      <p>Want to start fresh? This will clear your session history and return you to scale selection.</p>
       <button class="btn-ghost" onclick="newSession()">⟳ New Session</button>
     </div>
 
@@ -823,7 +594,6 @@
     }
   };
 
-  // Flat lookup for note display
   const ALL_SCALES = {};
   Object.values(SCALE_TYPES).forEach(t => Object.assign(ALL_SCALES, t.scales));
 
@@ -832,26 +602,17 @@
   // ══════════════════════════════════════
 
   const selectedScales = new Set();
-  const activeTypes    = new Set(['major', 'natural']); // types with grids open
+  const activeTypes    = new Set(['major', 'natural']);
   const history        = [];
-
-  const optionState = {
-    octaves: new Set(['1 Octave']),
-    hands:   new Set(['Hands Together']),
-    motion:  new Set(['Parallel Motion']),
-  };
-
-  // Per-type selected count tracker
-  const typeCounts = { major: 0, natural: 0, harmonic: 0, melodic: 0 };
+  const typeCounts     = { major: 0, natural: 0, harmonic: 0, melodic: 0 };
 
   // ══════════════════════════════════════
   // BUILD GRIDS
   // ══════════════════════════════════════
 
   function buildGrid(typeKey) {
-    const grid   = document.getElementById(`${typeKey}-grid`);
-    const scales = SCALE_TYPES[typeKey].scales;
-    Object.keys(scales).forEach(name => {
+    const grid = document.getElementById(`${typeKey}-grid`);
+    Object.keys(SCALE_TYPES[typeKey].scales).forEach(name => {
       const item = document.createElement('label');
       item.className = 'scale-item';
       item.dataset.name = name;
@@ -860,23 +621,16 @@
       const cb = document.createElement('input');
       cb.type = 'checkbox';
       cb.addEventListener('change', () => {
-        if (cb.checked) {
-          selectedScales.add(name);
-          typeCounts[typeKey]++;
-        } else {
-          selectedScales.delete(name);
-          typeCounts[typeKey]--;
-        }
+        if (cb.checked) { selectedScales.add(name);    typeCounts[typeKey]++; }
+        else            { selectedScales.delete(name); typeCounts[typeKey]--; }
         item.classList.toggle('checked', cb.checked);
         updateSectionCount(typeKey);
-        updateGenerateBtn();
+        updateBtn();
       });
 
-      const parts  = name.split(' ');
-      const root   = parts[0];
-      const rest   = parts.slice(1).join(' ');
-      const lbl    = document.createElement('span');
-      lbl.innerHTML = `<span class="scale-name">${root}</span>&nbsp;<span class="scale-type">${rest}</span>`;
+      const parts = name.split(' ');
+      const lbl   = document.createElement('span');
+      lbl.innerHTML = `<span class="scale-name">${parts[0]}</span>&nbsp;<span class="scale-type">${parts.slice(1).join(' ')}</span>`;
 
       item.appendChild(cb);
       item.appendChild(lbl);
@@ -893,21 +647,18 @@
   function toggleType(pill) {
     const type    = pill.dataset.type;
     const section = document.getElementById(`section-${type}`);
-    const isActive = activeTypes.has(type);
 
-    if (isActive) {
-      // Deactivate: collapse, deselect all scales in this type, mark inactive
+    if (activeTypes.has(type)) {
       activeTypes.delete(type);
       pill.classList.remove('active');
       section.classList.add('collapsed', 'inactive');
       sectionNone(type);
     } else {
-      // Activate: expand and mark active
       activeTypes.add(type);
       pill.classList.add('active');
       section.classList.remove('collapsed', 'inactive');
     }
-    updateGenerateBtn();
+    updateBtn();
   }
 
   // ══════════════════════════════════════
@@ -915,10 +666,8 @@
   // ══════════════════════════════════════
 
   function sectionAll(typeKey) {
-    const scales = SCALE_TYPES[typeKey].scales;
-    const grid   = document.getElementById(`${typeKey}-grid`);
     typeCounts[typeKey] = 0;
-    grid.querySelectorAll('.scale-item').forEach(item => {
+    document.getElementById(`${typeKey}-grid`).querySelectorAll('.scale-item').forEach(item => {
       const cb = item.querySelector('input');
       cb.checked = true;
       selectedScales.add(item.dataset.name);
@@ -926,71 +675,36 @@
       typeCounts[typeKey]++;
     });
     updateSectionCount(typeKey);
-    updateGenerateBtn();
+    updateBtn();
   }
 
   function sectionNone(typeKey) {
-    const grid = document.getElementById(`${typeKey}-grid`);
-    grid.querySelectorAll('.scale-item').forEach(item => {
-      const cb = item.querySelector('input');
-      cb.checked = false;
+    document.getElementById(`${typeKey}-grid`).querySelectorAll('.scale-item').forEach(item => {
+      item.querySelector('input').checked = false;
       selectedScales.delete(item.dataset.name);
       item.classList.remove('checked');
     });
     typeCounts[typeKey] = 0;
     updateSectionCount(typeKey);
-    updateGenerateBtn();
+    updateBtn();
   }
 
   function updateSectionCount(typeKey) {
     document.getElementById(`count-${typeKey}`).textContent = typeCounts[typeKey];
   }
 
-  // ══════════════════════════════════════
-  // GLOBAL TOOLBAR
-  // ══════════════════════════════════════
-
-  function globalAll() {
-    activeTypes.forEach(type => sectionAll(type));
-  }
-
-  function globalNone() {
-    ['major','natural','harmonic','melodic'].forEach(type => sectionNone(type));
-  }
+  function globalAll()  { activeTypes.forEach(t => sectionAll(t)); }
+  function globalNone() { ['major','natural','harmonic','melodic'].forEach(t => sectionNone(t)); }
 
   // ══════════════════════════════════════
-  // PRACTICE PARAMETER PILLS
+  // BUTTON STATE
   // ══════════════════════════════════════
 
-  function togglePill(input) {
-    const group = input.name;
-    const val   = input.value;
-    const set   = optionState[group];
-    set.clear();
-    set.add(val);
-    if (group === 'hands') syncMotionGroup();
-    updateGenerateBtn();
-  }
-
-  function syncMotionGroup() {
-    const togetherActive = optionState.hands.has('Hands Together');
-    const motionGroup    = document.getElementById('motion-group');
-    motionGroup.classList.toggle('disabled', !togetherActive);
-    if (!togetherActive) {
-      optionState.motion.clear();
-      optionState.motion.add('Parallel Motion');
-    }
-  }
-
-  // ══════════════════════════════════════
-  // GENERATE BUTTON STATE
-  // ══════════════════════════════════════
-
-  function updateGenerateBtn() {
+  function updateBtn() {
     const total = selectedScales.size;
     document.getElementById('count-total').textContent = total;
-    document.getElementById('generate-btn').disabled = (total === 0);
-    document.getElementById('warn-options').classList.toggle('visible', false);
+    document.getElementById('generate-btn').disabled   = (total === 0);
+    document.getElementById('warn-select').classList.toggle('visible', false);
   }
 
   // ══════════════════════════════════════
@@ -998,26 +712,24 @@
   // ══════════════════════════════════════
 
   function goToAssignment() {
-    if (selectedScales.size === 0) return;
-
-    const sc        = selectedScales.size;
-    const typeList  = [...activeTypes].map(t => SCALE_TYPES[t].label).join(', ');
-    const octStr    = [...optionState.octaves].join(' or ');
-    const handsStr  = [...optionState.hands].join(' or ');
-    const motionStr = optionState.hands.has('Hands Together')
-      ? ' · ' + [...optionState.motion].join(' or ') : '';
-
+    if (selectedScales.size === 0) {
+      document.getElementById('warn-select').classList.add('visible');
+      return;
+    }
+    const sc = selectedScales.size;
     document.getElementById('pool-summary').textContent =
-      `${sc} scale${sc > 1 ? 's' : ''} · ${octStr} · ${handsStr}${motionStr}`;
+      `Drawing from ${sc} scale${sc > 1 ? 's' : ''}`;
 
     document.getElementById('screen-select').classList.add('hidden');
     document.getElementById('screen-assign').classList.remove('hidden');
+    window.scrollTo(0, 0);
     generateAssignment();
   }
 
   function goBack() {
     document.getElementById('screen-assign').classList.add('hidden');
     document.getElementById('screen-select').classList.remove('hidden');
+    window.scrollTo(0, 0);
   }
 
   function newSession() {
@@ -1031,25 +743,17 @@
   // GENERATE ASSIGNMENT
   // ══════════════════════════════════════
 
-  function pick(arr)  { return arr[Math.floor(Math.random() * arr.length)]; }
-  function pickFrom(set) { return pick([...set]); }
+  function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 
   function generateAssignment() {
-    const scaleName     = pickFrom(selectedScales);
-    const notes         = ALL_SCALES[scaleName];
-    const octave        = pickFrom(optionState.octaves);
-    const hand          = pickFrom(optionState.hands);
-    const motionApplies = hand === 'Hands Together';
-    const motion        = motionApplies ? pickFrom(optionState.motion) : null;
+    const pool      = [...selectedScales];
+    const scaleName = pick(pool);
+    const notes     = ALL_SCALES[scaleName];
 
-    // Parse root / type label
     const parts = scaleName.split(' ');
-    const root  = parts[0];
-    const type  = parts.slice(1).join(' ');
-    document.getElementById('scale-root').textContent     = root;
-    document.getElementById('scale-type-tag').textContent = type;
+    document.getElementById('scale-root').textContent     = parts[0];
+    document.getElementById('scale-type-tag').textContent = parts.slice(1).join(' ');
 
-    // Note pills
     const notesRow = document.getElementById('notes-row');
     notesRow.innerHTML = '';
     notes.forEach((n, i) => {
@@ -1059,43 +763,27 @@
       notesRow.appendChild(pill);
     });
 
-    // Detail blocks
-    document.getElementById('detail-octaves').textContent = octave;
-    document.getElementById('detail-hands').textContent   = hand;
-    const motionEl    = document.getElementById('detail-motion');
-    const motionBlock = motionEl.closest('.detail-block');
-    if (motionApplies) {
-      motionEl.textContent      = motion;
-      motionBlock.style.opacity = '1';
-    } else {
-      motionEl.textContent      = '—';
-      motionBlock.style.opacity = '0.35';
-    }
-
     // Push previous to history
     if (history.length > 0) {
-      const prev      = history[history.length - 1];
-      const histEl    = document.getElementById('history-items');
-      const item      = document.createElement('div');
-      item.className  = 'history-item';
-      const prevParams = prev.motion
-        ? `${prev.octave} · ${prev.hand} · ${prev.motion}`
-        : `${prev.octave} · ${prev.hand}`;
-      item.innerHTML  =
-        `<span class="h-scale">${prev.scale}</span>`
-        + `<span class="h-params">${prevParams}</span>`;
+      const prev   = history[history.length - 1];
+      const histEl = document.getElementById('history-items');
+      const item   = document.createElement('div');
+      item.className = 'history-item';
+      item.innerHTML = `<span class="h-scale">${prev}</span>`;
       histEl.insertBefore(item, histEl.firstChild);
       if (histEl.children.length > 8) histEl.removeChild(histEl.lastChild);
       document.getElementById('history-list').style.display = 'block';
     }
 
-    history.push({ scale: scaleName, octave, hand, motion });
+    history.push(scaleName);
 
     // Re-trigger card animation
     const card = document.getElementById('assignment-card');
     card.style.animation = 'none';
     card.offsetHeight;
     card.style.animation = 'slideUp 0.4s ease both';
+
+    window.scrollTo(0, 0);
   }
 </script>
 </body>
