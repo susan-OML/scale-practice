@@ -133,6 +133,7 @@
       overflow: hidden;
     }
     .scale-section.collapsed .scale-grid { display: none; }
+    .scale-section:not(.collapsed) .inactive-label { display: none; }
     .scale-section.inactive { border-color: var(--rule); opacity: 0.55; }
     .scale-section-header {
       display: flex;
@@ -155,6 +156,10 @@
       color: var(--accent); font: inherit;
       text-decoration: underline; text-underline-offset: 3px; padding: 0;
     }
+    .scale-section.inactive .section-quick-links button {
+      pointer-events: none;
+      opacity: 0.3;
+    }
     .section-quick-links button:hover { color: var(--accent-light); }
     .section-quick-links .qdiv { color: var(--rule); }
     .inactive-label {
@@ -164,10 +169,10 @@
     }
 
     /* ── SCALE GRID ── */
-    .scale-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(195px, 1fr)); }
+    .scale-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
     .scale-item {
-      display: flex; align-items: center; gap: 0.75rem;
-      padding: 0.65rem 1rem;
+      display: flex; align-items: center; gap: 0.6rem;
+      padding: 0.45rem 0.8rem;
       border-bottom: 1px solid var(--rule);
       border-right: 1px solid var(--rule);
       cursor: pointer; transition: background 0.15s; user-select: none;
@@ -358,10 +363,10 @@
     <div class="type-toggle-wrap">
       <p class="type-toggle-hint">Toggle a scale type on to expand its grid. Only active types will be included in assignments.</p>
       <div class="type-toggle-row">
-        <span class="type-pill active" data-type="major" onclick="toggleType(this)">
+        <span class="type-pill" data-type="major" onclick="toggleType(this)">
           <span class="tp-dot"></span>Major
         </span>
-        <span class="type-pill active" data-type="natural" onclick="toggleType(this)">
+        <span class="type-pill" data-type="natural" onclick="toggleType(this)">
           <span class="tp-dot"></span>Natural Minor
         </span>
         <span class="type-pill" data-type="harmonic" onclick="toggleType(this)">
@@ -376,7 +381,7 @@
     <!-- SCALE GRIDS -->
     <p class="section-label">Scale Selection</p>
 
-    <div class="scale-section" id="section-major">
+    <div class="scale-section collapsed inactive" id="section-major">
       <div class="scale-section-header">
         <div class="section-header-left">
           <span class="section-title">Major</span>
@@ -389,9 +394,10 @@
         </div>
       </div>
       <div class="scale-grid" id="major-grid"></div>
+      <div class="inactive-label">Toggle "Major" above to enable this section.</div>
     </div>
 
-    <div class="scale-section" id="section-natural">
+    <div class="scale-section collapsed inactive" id="section-natural">
       <div class="scale-section-header">
         <div class="section-header-left">
           <span class="section-title">Natural Minor</span>
@@ -404,6 +410,7 @@
         </div>
       </div>
       <div class="scale-grid" id="natural-grid"></div>
+      <div class="inactive-label">Toggle "Natural Minor" above to enable this section.</div>
     </div>
 
     <div class="scale-section collapsed inactive" id="section-harmonic">
@@ -602,7 +609,7 @@
   // ══════════════════════════════════════
 
   const selectedScales = new Set();
-  const activeTypes    = new Set(['major', 'natural']);
+  const activeTypes    = new Set();
   const history        = [];
   const typeCounts     = { major: 0, natural: 0, harmonic: 0, melodic: 0 };
 
@@ -630,7 +637,7 @@
 
       const parts = name.split(' ');
       const lbl   = document.createElement('span');
-      lbl.innerHTML = `<span class="scale-name">${parts[0]}</span>&nbsp;<span class="scale-type">${parts.slice(1).join(' ')}</span>`;
+      lbl.innerHTML = `<span class="scale-name">${parts[0]}</span>`;
 
       item.appendChild(cb);
       item.appendChild(lbl);
