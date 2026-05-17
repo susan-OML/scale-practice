@@ -501,15 +501,15 @@
   <div class="inner">
 
     <header class="site-header">
-      <p class="eyebrow">Daily Drill</p>
-      <h1>Scale Practice<br>Generator</h1>
-      <p class="subtitle">Choose your scales · Set your parameters · Practice</p>
+      <p class="eyebrow">Random</p>
+      <h1>Scale<br>Generator</h1>
+      <p class="subtitle">Choose your scales · Choose your settings · Practice</p>
     </header>
 
     <!-- ── SCALE TYPE TOGGLES ── -->
     <p class="section-label">Scale Types</p>
     <div class="type-toggle-wrap">
-      <p class="type-toggle-hint">Toggle a scale type on to expand its grid. Only active types will appear in your assignments.</p>
+      <p class="type-toggle-hint">Toggle a scale type on to expand its grid below. Only active types will appear in your assignments.</p>
       <div class="type-toggle-row">
         <span class="type-pill active" data-type="major" onclick="toggleType(this)">
           <span class="tp-dot"></span>Major
@@ -661,11 +661,11 @@
     </div>
 
     <div class="warn-strip" id="warn-options">
-      ⚠ Please select at least one scale to generate an assignment.
+      ⚠ Please select at least one scale to generate a random scale.
     </div>
 
     <button class="btn-primary" id="generate-btn" onclick="goToAssignment()" disabled style="margin-top:2.2rem;">
-      Generate Assignment →
+      Generate Random Scale Assignment →
     </button>
 
   </div>
@@ -681,7 +681,7 @@
     <button class="back-link" onclick="goBack()">← Back to Settings</button>
 
     <header class="site-header">
-      <p class="eyebrow">Your Assignment</p>
+      <p class="eyebrow">Your Random Scale Assignment</p>
       <h1>Practice<br>Session</h1>
       <p class="subtitle" id="pool-summary"></p>
     </header>
@@ -715,7 +715,7 @@
 
     <!-- ACTIONS -->
     <div class="action-row">
-      <button class="btn-primary" onclick="generateAssignment()">Next Assignment ↻</button>
+      <button class="btn-primary" onclick="generateAssignment()">Next Scale ↻</button>
       <button class="btn-secondary" onclick="goBack()">← Change Settings</button>
     </div>
 
